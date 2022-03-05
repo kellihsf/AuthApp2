@@ -27,4 +27,30 @@ router.post('/register', async (req, res) => {
   })
 })
 
+// Log in as user
+router.post('/login', async (req, res) => {
+  const {username, password} = req.body // req.body.username req.body.password req.body.email
+
+  const user = await User.findOne({
+    where: {
+      username: username
+    }
+  })
+
+  if(user){
+    // takes our user input password from re.body, uses bcrypt to hash it and checks that the hash is the same as the already hashed password in our DB
+    const comparePass = bcrypt.compareSync(password, user.password)
+    if(comparePass === true) {
+      
+    res.redirect('/profile')
+    } else {
+      res.send("Wrong password")
+    }
+
+  } else {
+    res.send("No user found")
+  }
+  })
+
+
 module.exports = router;
