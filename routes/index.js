@@ -1,5 +1,9 @@
 var express = require('express');
+const jwt = require('jsonwebtoken')
 var router = express.Router();
+require('dotenv').config()
+const isValidToken = require('../middleware/isValidToken')
+const {User} = require('../models');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -17,10 +21,9 @@ router.get('/register', function(req, res, next) {
 });
 
 // Profile page
-router.get('/profile', function(req, res, next) {
-  res.render('profile');
+router.get('/profile', isValidToken, function(req, res, next) {
+  res.render('profile', {name: decoded.data});
 });
-
 
 
 module.exports = router;

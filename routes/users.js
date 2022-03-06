@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 require('dotenv').config()
 const saltRounds = bcrypt.genSaltSync(Number(process.env.SALT_FACTOR))
 const {User} = require('../models')
+const jwt = require('jsonwebtoken')
 
 
 /* GET users listing. */
@@ -41,7 +42,14 @@ router.post('/login', async (req, res) => {
     // takes our user input password from re.body, uses bcrypt to hash it and checks that the hash is the same as the already hashed password in our DB
     const comparePass = bcrypt.compareSync(password, user.password)
     if(comparePass === true) {
-      
+      const token = jwt.sign(
+        {
+          data: user.username
+        }, 
+        process.env.SECRET_KEY,
+        {expiresIn: "1h"}
+      )
+    res.cookie("token", token)
     res.redirect('/profile')
     } else {
       res.send("Wrong password")
