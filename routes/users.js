@@ -29,7 +29,7 @@ router.post('/register', async (req, res) => {
 })
 
 // Log in as user
-router.post('/login', async (req, res) => {
+router.post('/login', async (req, res, next) => {
   const {username, password} = req.body // req.body.username req.body.password req.body.email
 
   const user = await User.findOne({
@@ -50,7 +50,7 @@ router.post('/login', async (req, res) => {
         {expiresIn: "1h"}
       )
     res.cookie("token", token)
-    res.redirect('/profile')
+    res.redirect(`/profile/${user.id}`)
     } else {
       res.send("Wrong password")
     }
