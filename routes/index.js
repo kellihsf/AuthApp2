@@ -40,6 +40,28 @@ router.get('/register', function(req, res, next) {
   res.render('register')
 });
 
+// Reference Page
+router.get('/reference', async function (req, res, next) {
+
+  let config = {
+    method: "get",
+    url: 'https://api.openbrewerydb.org/breweries?by_name=bartlett_hall',
+    headers: {},
+  }
+
+  const brewery = await axios(config)
+  .then(function (response) {
+    return response.data
+  })
+  .catch(function(error) {
+    console.log(error)
+  })
+  
+  console.log("These are the breweries:", brewery)
+
+  res.render("reference", {title: "List of Breweries", brewery})
+})
+
 // Profile page
   router.get('/profile/:id', isValidToken, async function(req, res, next) {
     const {id} = req.params;
