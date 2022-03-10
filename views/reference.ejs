@@ -8,7 +8,12 @@
     <h1><%= title %></h1>
     <h2>Welcome to <%= title %></h2>
     <div>
-        <h3>Brewery Name: <%= brewery.name %></h3>
+        <h3>Brewery Name: <%= brewery[0].name %></h3>
+        <h3>Brewery Address: <br>
+            <%= brewery[0].street %>
+            <br>
+            <%= brewery[0].city %>, <%= brewery[0].state %> &nbsp <%= brewery[0].postal_code %>
+        </h3>
     </div>
   </body>
 </html>
